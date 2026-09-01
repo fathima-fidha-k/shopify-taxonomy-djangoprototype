@@ -1,0 +1,54 @@
+[
+  {"id": "sample-hg", "name": "Home & Garden", "full_name": "Home & Garden", "parent_id": null},
+  {"id": "sample-hg-furniture", "name": "Furniture", "full_name": "Home & Garden > Furniture", "parent_id": "sample-hg"},
+  {"id": "sample-hg-lighting", "name": "Lighting", "full_name": "Home & Garden > Lighting", "parent_id": "sample-hg"},
+  {"id": "sample-hg-decor", "name": "Decor", "full_name": "Home & Garden > Decor", "parent_id": "sample-hg"},
+
+  {"id": "sample-hg-furn-livingroom", "name": "Living Room Furniture", "full_name": "Home & Garden > Furniture > Living Room Furniture", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-sofas", "name": "Sofas", "full_name": "Home & Garden > Furniture > Living Room Furniture > Sofas", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-loveseats", "name": "Loveseats", "full_name": "Home & Garden > Furniture > Living Room Furniture > Loveseats", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-sectionals", "name": "Sectional Sofas", "full_name": "Home & Garden > Furniture > Living Room Furniture > Sectional Sofas", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-armchairs", "name": "Armchairs & Accent Chairs", "full_name": "Home & Garden > Furniture > Living Room Furniture > Armchairs & Accent Chairs", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-ottomans", "name": "Ottomans & Poufs", "full_name": "Home & Garden > Furniture > Living Room Furniture > Ottomans & Poufs", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-coffeetables", "name": "Coffee Tables", "full_name": "Home & Garden > Furniture > Living Room Furniture > Coffee Tables", "parent_id": "sample-hg-furn-livingroom"},
+  {"id": "sample-hg-furn-tvstands", "name": "TV Stands & Media Consoles", "full_name": "Home & Garden > Furniture > Living Room Furniture > TV Stands & Media Consoles", "parent_id": "sample-hg-furn-livingroom"},
+
+  {"id": "sample-hg-furn-chairs", "name": "Chairs", "full_name": "Home & Garden > Furniture > Chairs", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-diningchairs", "name": "Dining Chairs", "full_name": "Home & Garden > Furniture > Chairs > Dining Chairs", "parent_id": "sample-hg-furn-chairs"},
+  {"id": "sample-hg-furn-officechairs", "name": "Office Chairs", "full_name": "Home & Garden > Furniture > Chairs > Office Chairs", "parent_id": "sample-hg-furn-chairs"},
+  {"id": "sample-hg-furn-stools", "name": "Stools", "full_name": "Home & Garden > Furniture > Chairs > Stools", "parent_id": "sample-hg-furn-chairs"},
+  {"id": "sample-hg-furn-rockingchairs", "name": "Rocking Chairs", "full_name": "Home & Garden > Furniture > Chairs > Rocking Chairs", "parent_id": "sample-hg-furn-chairs"},
+
+  {"id": "sample-hg-furn-tables", "name": "Tables", "full_name": "Home & Garden > Furniture > Tables", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-diningtables", "name": "Dining Tables", "full_name": "Home & Garden > Furniture > Tables > Dining Tables", "parent_id": "sample-hg-furn-tables"},
+  {"id": "sample-hg-furn-sidetables", "name": "Side & End Tables", "full_name": "Home & Garden > Furniture > Tables > Side & End Tables", "parent_id": "sample-hg-furn-tables"},
+  {"id": "sample-hg-furn-desks", "name": "Desks", "full_name": "Home & Garden > Furniture > Tables > Desks", "parent_id": "sample-hg-furn-tables"},
+
+  {"id": "sample-hg-furn-bedroom", "name": "Bedroom Furniture", "full_name": "Home & Garden > Furniture > Bedroom Furniture", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-beds", "name": "Beds", "full_name": "Home & Garden > Furniture > Bedroom Furniture > Beds", "parent_id": "sample-hg-furn-bedroom"},
+  {"id": "sample-hg-furn-dressers", "name": "Dressers & Chests", "full_name": "Home & Garden > Furniture > Bedroom Furniture > Dressers & Chests", "parent_id": "sample-hg-furn-bedroom"},
+  {"id": "sample-hg-furn-nightstands", "name": "Nightstands", "full_name": "Home & Garden > Furniture > Bedroom Furniture > Nightstands", "parent_id": "sample-hg-furn-bedroom"},
+  {"id": "sample-hg-furn-wardrobes", "name": "Wardrobes & Armoires", "full_name": "Home & Garden > Furniture > Bedroom Furniture > Wardrobes & Armoires", "parent_id": "sample-hg-furn-bedroom"},
+
+  {"id": "sample-hg-furn-office", "name": "Office Furniture", "full_name": "Home & Garden > Furniture > Office Furniture", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-bookcases", "name": "Bookcases & Shelving", "full_name": "Home & Garden > Furniture > Office Furniture > Bookcases & Shelving", "parent_id": "sample-hg-furn-office"},
+  {"id": "sample-hg-furn-filingcabinets", "name": "Filing Cabinets", "full_name": "Home & Garden > Furniture > Office Furniture > Filing Cabinets", "parent_id": "sample-hg-furn-office"},
+
+  {"id": "sample-hg-furn-bathroom", "name": "Bathroom Furniture", "full_name": "Home & Garden > Furniture > Bathroom Furniture", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-vanities", "name": "Vanities", "full_name": "Home & Garden > Furniture > Bathroom Furniture > Vanities", "parent_id": "sample-hg-furn-bathroom"},
+
+  {"id": "sample-hg-furn-outdoor", "name": "Outdoor Furniture", "full_name": "Home & Garden > Furniture > Outdoor Furniture", "parent_id": "sample-hg-furniture"},
+  {"id": "sample-hg-furn-outdoorseating", "name": "Outdoor Seating", "full_name": "Home & Garden > Furniture > Outdoor Furniture > Outdoor Seating", "parent_id": "sample-hg-furn-outdoor"},
+  {"id": "sample-hg-furn-outdoordining", "name": "Outdoor Dining Sets", "full_name": "Home & Garden > Furniture > Outdoor Furniture > Outdoor Dining Sets", "parent_id": "sample-hg-furn-outdoor"},
+  {"id": "sample-hg-furn-daybeds", "name": "Daybeds & Chaise Lounges", "full_name": "Home & Garden > Furniture > Outdoor Furniture > Daybeds & Chaise Lounges", "parent_id": "sample-hg-furn-outdoor"},
+
+  {"id": "sample-hg-light-ceiling", "name": "Ceiling Lights", "full_name": "Home & Garden > Lighting > Ceiling Lights", "parent_id": "sample-hg-lighting"},
+  {"id": "sample-hg-light-floor", "name": "Floor Lamps", "full_name": "Home & Garden > Lighting > Floor Lamps", "parent_id": "sample-hg-lighting"},
+  {"id": "sample-hg-light-table", "name": "Table Lamps", "full_name": "Home & Garden > Lighting > Table Lamps", "parent_id": "sample-hg-lighting"},
+
+  {"id": "sample-hg-decor-mirrors", "name": "Mirrors", "full_name": "Home & Garden > Decor > Mirrors", "parent_id": "sample-hg-decor"},
+  {"id": "sample-hg-decor-rugs", "name": "Rugs", "full_name": "Home & Garden > Decor > Rugs", "parent_id": "sample-hg-decor"},
+  {"id": "sample-hg-decor-pillows", "name": "Decorative Pillows", "full_name": "Home & Garden > Decor > Decorative Pillows", "parent_id": "sample-hg-decor"},
+  {"id": "sample-hg-decor-wallart", "name": "Wall Art", "full_name": "Home & Garden > Decor > Wall Art", "parent_id": "sample-hg-decor"},
+  {"id": "sample-hg-decor-storage", "name": "Storage & Organization", "full_name": "Home & Garden > Decor > Storage & Organization", "parent_id": "sample-hg-decor"}
+]

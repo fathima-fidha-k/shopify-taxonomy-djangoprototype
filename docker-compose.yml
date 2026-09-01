@@ -1,0 +1,9 @@
+# Convenience for testing the Celery integration (README Priority 7).
+# Run with: docker compose up -d
+# This starts only Redis (the Celery broker) -- Django/Celery still run
+# natively via `python manage.py runserver` / `celery -A config worker`.
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"

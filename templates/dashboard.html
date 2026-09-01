@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+  <title>Product Classification Review</title>
+  <style>
+    body { font-family: -apple-system, Arial, sans-serif; margin: 2rem; background: #f7f7f8; color: #222; }
+    h1 { font-size: 1.4rem; }
+    .stats { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .stat { background: white; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .stat b { display: block; font-size: 1.3rem; }
+    .filters { margin-bottom: 1.25rem; }
+    .filters a { margin-right: 0.75rem; text-decoration: none; color: #2F5496; font-size: 0.9rem; }
+    .filters a.active { font-weight: bold; text-decoration: underline; }
+    .search-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; background: white; padding: 0.6rem 0.8rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .search-bar input[type="text"] { flex: 1; min-width: 160px; }
+    .search-bar input, .search-bar select { border: 1px solid #ccc; border-radius: 6px; padding: 5px 8px; font-size: 0.82rem; }
+    .search-bar input[type="number"] { width: 70px; }
+    .clear-link { font-size: 0.8rem; color: #888; text-decoration: none; margin-left: 4px; }
+    .card { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 1rem 1.25rem; margin-bottom: 0.9rem; display: flex; gap: 1rem; }
+    .thumb { width: 90px; height: 90px; object-fit: cover; border-radius: 8px; background: #eee; flex-shrink: 0; }
+    .thumb-placeholder { width: 90px; height: 90px; border-radius: 8px; background: #eee; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.7rem; text-align: center; }
+    .card-body { flex: 1; min-width: 0; }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .card h3 { margin: 0 0 0.15rem 0; font-size: 1rem; }
+    .meta-line { color: #888; font-size: 0.78rem; }
+    .badge { padding: 2px 9px; border-radius: 10px; font-size: 0.72rem; color: white; white-space: nowrap; }
+    .auto_classified { background: #2e7d32; }
+    .needs_review { background: #ef6c00; }
+    .failed { background: #c62828; }
+    .approved { background: #1565c0; }
+    .pending, .processing { background: #999; }
+    .row-label { font-size: 0.76rem; color: #777; margin-top: 0.55rem; text-transform: uppercase; letter-spacing: 0.02em; }
+    .path { font-weight: 600; }
+    .agree { color: #2e7d32; font-size: 0.78rem; }
+    .disagree { color: #c62828; font-size: 0.78rem; }
+    .alt { display: inline-block; background: #f0f0f2; border-radius: 6px; padding: 2px 8px; margin: 2px 4px 2px 0; font-size: 0.78rem; }
+    .attr { display: inline-block; background: #e8eefc; border-radius: 6px; padding: 2px 8px; margin: 2px 4px 2px 0; font-size: 0.78rem; }
+    .layers { font-size: 0.72rem; color: #999; margin-top: 0.4rem; }
+    .actions { margin-top: 0.7rem; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    button, select { border: none; border-radius: 6px; padding: 5px 10px; font-size: 0.8rem; cursor: pointer; }
+    select { border: 1px solid #ccc; background: white; }
+    .approve-btn { background: #2e7d32; color: white; }
+    .reject-btn { background: #c62828; color: white; }
+    .change-btn { background: #555; color: white; }
+    .conf-row { display: flex; align-items: center; gap: 10px; margin-top: 0.55rem; }
+    .conf { font-size: 1.3rem; font-weight: 700; }
+    .breakdown { font-size: 0.72rem; color: #888; }
+    .reasoning { margin-top: 0.4rem; font-size: 0.8rem; color: #333; }
+    .reasoning li { margin-bottom: 2px; }
+    .reasoning-toggle { font-size: 0.75rem; color: #2F5496; cursor: pointer; margin-top: 0.4rem; display: inline-block; }
+    .reasoning-body { display: none; }
+    .reasoning-body.open { display: block; }
+  </style>
+</head>
+<body>
+  <h1>Product Classification Review Dashboard</h1>
+  <div class="stats">
+    <div class="stat"><b>{{ stats.total }}</b>Total</div>
+    <div class="stat"><b>{{ stats.auto }}</b>Auto-classified</div>
+    <div class="stat"><b>{{ stats.review }}</b>Needs review</div>
+    <div class="stat"><b>{{ stats.approved }}</b>Approved</div>
+    <div class="stat"><b>{{ stats.failed }}</b>Failed</div>
+  </div>
+  <div class="filters">
+    <a href="?" class="{% if not status_filter %}active{% endif %}">All</a>
+    <a href="?status=needs_review" class="{% if status_filter == 'needs_review' %}active{% endif %}">Needs review</a>
+    <a href="?status=auto_classified" class="{% if status_filter == 'auto_classified' %}active{% endif %}">Auto-classified</a>
+    <a href="?status=approved" class="{% if status_filter == 'approved' %}active{% endif %}">Approved</a>
+    <a href="?status=failed" class="{% if status_filter == 'failed' %}active{% endif %}">Failed</a>
+  </div>
+
+  <form class="search-bar" method="get">
+    {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+    <input type="text" name="q" placeholder="Search SKU or title…" value="{{ query }}">
+    <input type="number" name="min_confidence" placeholder="Min %" min="0" max="100" value="{{ min_confidence }}">
+    <input type="number" name="max_confidence" placeholder="Max %" min="0" max="100" value="{{ max_confidence }}">
+    <select name="sort">
+      <option value="" {% if not sort %}selected{% endif %}>Sort: default (ID)</option>
+      <option value="confidence_desc" {% if sort == 'confidence_desc' %}selected{% endif %}>Sort: confidence high→low</option>
+      <option value="confidence_asc" {% if sort == 'confidence_asc' %}selected{% endif %}>Sort: confidence low→high</option>
+    </select>
+    <button type="submit" class="change-btn">Apply</button>
+    <a href="?" class="clear-link">Clear</a>
+  </form>
+
+  {% for item in products %}
+  {% with c=item.c %}
+  <div class="card" id="card-{{ c.id }}">
+    {% if c.product.image_url %}
+      <img class="thumb" src="{{ c.product.image_url }}" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb-placeholder&quot;>no image</div>'">
+    {% else %}
+      <div class="thumb-placeholder">no image</div>
+    {% endif %}
+
+    <div class="card-body">
+      <div class="card-top">
+        <div>
+          <h3>{{ c.product.title|default:"(no title)" }}</h3>
+          <div class="meta-line">
+            {{ c.product.sku }}
+            {% if c.product.brand %} · Brand: {{ c.product.brand }}{% endif %}
+            {% if c.product.product_type %} · Type: {{ c.product.product_type }}{% endif %}
+          </div>
+        </div>
+        <span class="badge {{ c.status }}" id="status-{{ c.id }}">{{ c.status }}</span>
+      </div>
+
+      <div class="row-label">Predicted category (independent of source data)</div>
+      <div class="path">{{ c.predicted_category.full_path|default:"— no match —" }}</div>
+
+      <div class="conf-row">
+        <div class="conf">{{ c.confidence }}%</div>
+        {% if c.confidence_breakdown %}
+        <div class="breakdown">
+          {% for k, v in c.confidence_breakdown.items %}{{ k }}: {{ v }}{% if not forloop.last %} · {% endif %}{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      {% if c.reasoning %}
+      <span class="reasoning-toggle" onclick="toggleReasoning({{ c.id }})">Why? ▾</span>
+      <div class="reasoning-body" id="reasoning-{{ c.id }}">
+        <ul class="reasoning">
+          {% for r in c.reasoning %}<li>✓ {{ r }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="row-label">Source spreadsheet category (reference only — not used to classify)</div>
+      <div>
+        {{ item.source_label|default:"—" }}
+        {% if item.source_label %}
+          {% if item.agrees %}<span class="agree">&#10003; matches prediction</span>
+          {% else %}<span class="disagree">&#8800; differs from prediction</span>{% endif %}
+        {% endif %}
+      </div>
+
+      {% if c.alternatives %}
+      <div class="row-label">Alternative suggestions</div>
+      <div>
+        {% for alt in c.alternatives %}<span class="alt">{{ alt.path }} ({{ alt.confidence }}%)</span>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if c.attribute_values.all %}
+      <div class="row-label">Detected attributes</div>
+      <div>
+        {% for av in c.attribute_values.all %}<span class="attr">{{ av.attribute.name }}: {{ av.value.value }} ({{ av.confidence }}%)</span>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if c.failure_reason %}
+      <div class="row-label">Note: {{ c.failure_reason }}</div>
+      {% endif %}
+
+      {% if c.layers_used %}
+      <div class="layers">Layers used: {{ c.layers_used|join:", " }}</div>
+      {% endif %}
+
+      <div class="actions">
+        <button class="approve-btn" onclick="review({{ c.id }}, 'approved')">Approve</button>
+        <button class="reject-btn" onclick="review({{ c.id }}, 'needs_review')">Send back to review</button>
+        <select id="category-select-{{ c.id }}">
+          <option value="">Change category to…</option>
+          {% for path in all_category_paths %}<option value="{{ path }}">{{ path }}</option>{% endfor %}
+        </select>
+        <button class="change-btn" onclick="changeCategory({{ c.id }})">Apply</button>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% endfor %}
+
+  <script>
+    function toggleReasoning(id) {
+      document.getElementById(`reasoning-${id}`).classList.toggle('open');
+    }
+
+    async function patchClassification(id, body) {
+      const res = await fetch(`/api/products/${id}/classification/`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        alert("Update failed — see console.");
+        console.error(await res.text());
+        return false;
+      }
+      return true;
+    }
+
+    async function review(id, newStatus) {
+      const ok = await patchClassification(id, { status: newStatus, reviewed_by: "dashboard-user" });
+      if (ok) {
+        document.getElementById(`status-${id}`).textContent = newStatus;
+        document.getElementById(`status-${id}`).className = `badge ${newStatus}`;
+      }
+    }
+
+    async function changeCategory(id) {
+      const select = document.getElementById(`category-select-${id}`);
+      if (!select.value) return;
+      const ok = await patchClassification(id, { category_path: select.value, status: "approved", reviewed_by: "dashboard-user" });
+      if (ok) {
+        document.getElementById(`status-${id}`).textContent = "approved";
+        document.getElementById(`status-${id}`).className = "badge approved";
+      }
+    }
+  </script>
+</body>
+</html>
