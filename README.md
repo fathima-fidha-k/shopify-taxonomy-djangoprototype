@@ -30,21 +30,21 @@ django_prototype/ │── classifier/ │── config/ │── templates/ �
 
 Setup
 
-# 1. Navigate into the project folder
+1. Navigate into the project folder
 cd django_prototype_v2
-# 2. Create and activate a virtual environment (skip if you already made one)
+2. Create and activate a virtual environment (skip if you already made one)
 python -m venv venv
 venv\Scripts\Activate.ps1
-# 3. Install dependencies (retry with longer timeout if it fails on a slow connection)
+3. Install dependencies (retry with longer timeout if it fails on a slow connection)
 pip install -r requirements.txt --timeout 120 --retries 5
-# 4. Generate and apply migrations
+4. Generate and apply migrations
 python manage.py makemigrations classifier
 python manage.py migrate
-# 5. Load the taxonomy reference data into the database
+5. Load the taxonomy reference data into the database
 python manage.py seed_taxonomy
-# 6. Import and classify your product catalogue (fast, text-only run)
+6. Import and classify your product catalogue (fast, text-only run)
 python manage.py classify_catalogue "Product List.xlsx" --limit 5000
-# 7. Start the server
+7. Start the server
 python manage.py runserver
 
 
