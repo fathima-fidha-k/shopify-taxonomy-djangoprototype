@@ -1,4 +1,4 @@
-Shopify Product Taxonomy Classifier (Django Prototype)
+SHOPIFY PRODUCT TAXONOMY CLASSIFIER (DJANGO PROTOTYPE):
 
 This project is a Django-based prototype that classifies products from an Excel catalogue into Shopify Product Taxonomy categories. It was built as part of a Python Developer technical assignment.s
 The application imports products from an Excel file, predicts a category, calculates a confidence score, suggests alternative categories when confidence is low, and provides a simple dashboard to review the results.
