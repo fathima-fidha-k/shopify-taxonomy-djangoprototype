@@ -1,26 +1,3 @@
-"""
-Optional LLM classification layer -- Layer 3 of the pipeline, used only for
-products where Layer 1 (keywords) + Layer 2 (semantic similarity) disagree
-or both score low. This keeps API costs down: most products never reach
-this layer (Q10 - reduce total calls needed).
-
-This layer is OFF by default and has not been executed in this sandbox
-(no internet access here to reach any LLM API). It activates automatically,
-with no code changes, if an API key is present in the environment:
-
-    export ANTHROPIC_API_KEY=sk-...
-    python manage.py classify_catalogue "Product List.xlsx" --with-llm
-
-If no key is set, `is_available()` returns False and the caller (engine.py)
-skips this layer entirely -- classification still works end-to-end without it.
-
-The code below uses the standard Anthropic Python SDK request shape. It has
-been written carefully and reviewed, but -- unlike the keyword and semantic
-layers -- it is unverified by an actual API call, since none was possible
-here. Treat it as a real, ready-to-test integration point, not a confirmed
-working feature, until you've run it once with a live key.
-"""
-
 import json
 import os
 
