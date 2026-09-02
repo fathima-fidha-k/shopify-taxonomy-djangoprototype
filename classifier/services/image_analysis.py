@@ -1,26 +1,3 @@
-"""
-Real image processing -- Layer 4 of the classification pipeline.
-
-Previously this prototype only checked `bool(image_url)` as a completeness
-signal. This module actually downloads the image and extracts its dominant
-color from real pixel data via Pillow, which is then used as a genuine
-image-derived attribute value (Q3) rather than a placeholder.
-
-This is a legitimate, if simple, "vision" signal: color is one of the most
-reliable things to extract from a product photo without a trained model, and
-it demonstrably improves on text alone when a listing's description doesn't
-mention color at all. Swapping this module's internals for a real vision
-model / CLIP embedding / vision-LLM call is the natural next step for
-production (see the written answers, Q3) -- the calling code in engine.py
-does not need to change, since the contract (`analyze_image(url) -> dict`)
-stays the same.
-
-Network calls are deliberately opt-in (see the `--with-images` flag on the
-classify_catalogue command) since fetching thousands of remote images is
-slow and bandwidth-heavy -- not something you want on by default for a quick
-test run.
-"""
-
 import io
 from urllib.parse import urlparse
 
