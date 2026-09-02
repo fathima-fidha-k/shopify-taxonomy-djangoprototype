@@ -1,30 +1,3 @@
-"""
-Optional vision classification layer -- Layer 4b, a genuine image-based
-*category* signal, distinct from the pixel-color extraction in
-image_analysis.py (which only ever produced an attribute, never a category
-vote -- that was the specific weakness flagged in review Priority 6).
-
-This module sends the actual product photo to a vision-capable LLM and asks
-it to pick the closest taxonomy category, exactly the same pattern already
-used for the optional text LLM layer (llm_classifier.py). The result is
-fused into engine.py's weighted scoring as a real, independent vote (15% of
-the total confidence weight -- see WEIGHTS in engine.py), not just used to
-tag an attribute.
-
-Like llm_classifier.py, this is OFF by default and requires network + an
-API key neither of which are available in the sandbox this was built in.
-It activates automatically, with no code changes, once ANTHROPIC_API_KEY is
-set:
-
-    export ANTHROPIC_API_KEY=sk-...
-    python manage.py classify_catalogue "Product List.xlsx" --with-images --with-vision
-
-Written carefully against the standard Anthropic SDK multimodal message
-shape, but -- like llm_classifier.py -- unverified by an actual API call.
-Treat it as a real, ready-to-test integration point, not a confirmed
-working feature, until you've run it once with a live key.
-"""
-
 import base64
 import json
 import os
@@ -43,12 +16,6 @@ def is_available():
 
 
 def classify_image(image_url):
-    """
-    Returns {"category": <key>, "confidence": 0-100} or None if unavailable/failed.
-    Caller (engine.py) treats this as one more vote in the weighted fusion,
-    never as the sole decision -- so a failure here just means this layer
-    contributes nothing, not that classification stops (Q8).
-    """
     if not is_available() or not image_url:
         return None
 
