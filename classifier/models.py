@@ -2,14 +2,6 @@ from django.db import models
 
 
 class Category(models.Model):
-    """
-    A node in the Shopify Product Taxonomy tree (Q5). Self-referencing to
-    represent the hierarchy, e.g. Furniture > Living Room Furniture > Sofas.
-
-    Populated either by `seed_taxonomy` (a small bundled placeholder subset,
-    for a zero-setup demo) or by `import_taxonomy` (a real Shopify taxonomy
-    export you download and point the command at -- see README "Priority 3").
-    """
     shopify_gid = models.CharField(max_length=255, unique=True, help_text="Shopify's canonical taxonomy GID, or a placeholder GID for the bundled demo subset")
     name = models.CharField(max_length=255)
     parent = models.ForeignKey("self", null=True, blank=True, related_name="children", on_delete=models.SET_NULL)
