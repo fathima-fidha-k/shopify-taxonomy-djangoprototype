@@ -1,21 +1,3 @@
-"""
-Semantic similarity layer -- Layer 2 of the classification pipeline
-(keyword rules -> semantic similarity -> [optional LLM] -> [optional image] -> fusion).
-
-Uses TF-IDF + cosine similarity (via scikit-learn), fully offline, no external
-API required. This catches products whose wording doesn't literally contain a
-category keyword but is topically close (e.g. "reading nook chair" scoring
-close to "armchair" via shared vocabulary weighting), which pure substring
-matching in Layer 1 misses.
-
-This is intentionally a classical NLP technique rather than a call to an LLM:
-it needs no API key, no network access, and no per-request cost, so it works
-identically in this offline sandbox and in production. Swapping in real
-sentence-embeddings (e.g. a HuggingFace model) or an LLM call is a drop-in
-replacement for `_vectorizer`/`score_all` below -- the fusion logic in
-engine.py does not need to change.
-"""
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
