@@ -5,10 +5,6 @@ Small text-extraction and normalization helpers shared across the pipeline.
 import re
 
 _BRAND_PATTERN = re.compile(r"\bby\s+([A-Z][\w&]+(?:\s+[A-Z][\w&]+){0,2})\s*$")
-
-# Priority 11: normalize raw keyword-matched attribute values to a consistent,
-# presentable vocabulary before they're stored/shown -- e.g. "grey" and "gray"
-# should never appear as two different values in the UI or database.
 _NORMALIZATION_MAP = {
     "grey": "Gray", "gray": "Gray",
     "white": "White", "black": "Black", "beige": "Beige", "brown": "Brown",
@@ -26,12 +22,7 @@ _NORMALIZATION_MAP = {
 
 def extract_brand(title):
     """
-    Extract a brand name from a product title, e.g. "Empress Sofa by Modway" -> "Modway".
-
-    This is genuine extraction from unstructured text, not a lookup against a
-    pre-existing structured "Brand" column -- the provided catalogue has no
-    such column. Falls back to "" if no "by <Brand>" pattern is found, which
-    the caller should treat the same as any other missing field (Q2).
+    Extract a brand name
     """
     if not title:
         return ""
@@ -41,10 +32,7 @@ def extract_brand(title):
 
 def normalize_attribute_value(attribute_name, raw_value):
     """
-    Normalize a raw, lowercase keyword match (e.g. "grey", "bonded leather")
-    to a consistent display form (e.g. "Gray", "Bonded Leather") -- Priority 11.
-    Falls back to title-casing anything not in the explicit map, so an
-    unrecognized value still displays reasonably rather than raw/lowercase.
+    Normalize a raw
     """
     key = raw_value.strip().lower()
     return _NORMALIZATION_MAP.get(key, raw_value.strip().title())
