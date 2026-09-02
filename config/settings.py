@@ -1,13 +1,3 @@
-"""
-Django settings for the Shopify Product Taxonomy Classifier.
-
-Run with MariaDB (production / as specified in the assignment) by setting
-the environment variables below. For a zero-setup local test run without
-installing MariaDB, leave USE_SQLITE_FOR_DEV=1 (default) and Django will use
-its built-in sqlite3 backend instead -- the models, ORM code, and API are
-identical either way; only this file changes.
-"""
-
 import os
 from pathlib import Path
 
