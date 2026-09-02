@@ -1,20 +1,8 @@
 Django>=5.0,<6.0
 djangorestframework>=3.15
 openpyxl>=3.1
-scikit-learn>=1.4      # Layer 2: TF-IDF semantic similarity
-Pillow>=10.0            # Layer 4a: real image color extraction
-requests>=2.31          # Layer 4a/4b: fetching product images
+scikit-learn>=1.4      
+Pillow>=10.0            
+requests>=2.31          
 
-# Priority 7 -- real background batch processing. OPTIONAL: only required if
-# you use `classify_catalogue ... --async` and run a worker. Everything else
-# in this project (including plain `runserver`) works with zero Celery/Redis
-# installed -- config/__init__.py guards this import so Django itself never
-# requires Celery to start. Uncomment and install when you want to test it:
-# celery[redis]>=5.3
 
-# Optional (Layer 3 / 4b -- LLM/vision classification, only activates if
-# ANTHROPIC_API_KEY is set)
-# anthropic>=0.30
-
-# Production only (MariaDB backend) -- not needed if USE_SQLITE_FOR_DEV=1
-# mysqlclient>=2.2
