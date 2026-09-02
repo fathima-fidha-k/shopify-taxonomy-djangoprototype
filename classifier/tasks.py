@@ -1,51 +1,9 @@
-"""
-Real Celery tasks for distributed batch classification (README Priority 7).
-
-Unlike the sync path in classify_catalogue.py (one Python process looping
-over chunks), this dispatches one task per product to however many Celery
-workers you run, which is what actually lets 10,000+ products be processed
-concurrently instead of sequentially (Q4, Q10).
-
-HONESTY NOTE: this code is written to run correctly against a real
-Celery + Redis setup, and follows standard, well-documented Celery
-patterns -- but it has not been executed in the sandbox this project was
-built in (no internet access there to install Celery or run Redis). Unlike
-the vision/LLM layers (blocked by needing a paid API key), this is only
-blocked by sandbox tooling, not by anything you can't also do -- you have
-full internet access, so you can actually install Redis + Celery and test
-this for real. See README "Priority 7" for the exact steps.
-
-Usage:
-    # Terminal 1: run Redis (simplest via Docker)
-    docker run -p 6379:6379 redis
-
-    # Terminal 2: run a worker
-    celery -A config worker --loglevel=info --pool=solo   # --pool=solo required on Windows
-
-    # Terminal 3: dispatch work
-    python manage.py classify_catalogue "Product List.xlsx" --limit 5000 --async
-"""
-
 from celery import shared_task
 from django.utils import timezone
 
 
 @shared_task(bind=True, max_retries=3, acks_late=True)
 def classify_one_product(self, classification_id, job_id, with_images, with_vision, with_llm):
-    """
-    Classifies exactly one product. One task per product (rather than one
-    task per chunk) is deliberate for the scenario in Q10 -- if each
-    external image/LLM call takes ~2 seconds, a single slow call must never
-    block the other 99 products in its chunk; each product's fate is fully
-    independent.
-
-    acks_late=True means this task is only marked complete by the broker
-    after it actually finishes. If the worker process crashes mid-task, the
-    broker redelivers it to another worker automatically -- this is the
-    resumability mechanism for the Celery path (Q11), complementing the
-    per-row `status` field which is the resumability mechanism for the sync
-    path.
-    """
     # Imported inside the task, not at module load time, so that importing
     # this module never fails just because Django hasn't finished setting up
     # yet when Celery first discovers tasks.
@@ -123,13 +81,6 @@ def _update_job_counters(job):
 
 @shared_task
 def dispatch_pending_classifications(job_id, with_images, with_vision, with_llm):
-    """
-    Alternative entry point: fan out all currently-pending classifications
-    for a job as individual tasks. classify_catalogue.py's --async flag
-    calls .delay() per product directly instead of using this, but this task
-    is provided so dispatch can itself be queued (useful if you want the
-    Django view/command to return instantly and let a worker do the fan-out).
-    """
     from classifier.models import ProductClassification
 
     pending_ids = ProductClassification.objects.filter(
