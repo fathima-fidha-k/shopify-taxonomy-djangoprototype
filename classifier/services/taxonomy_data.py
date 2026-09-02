@@ -1,19 +1,3 @@
-"""
-A small subset of the Shopify Product Taxonomy (Home & Garden > Furniture branch),
-hand-mapped for this prototype. In production this would be generated once from
-Shopify's published taxonomy files (see the reference link in the assignment)
-and stored in the Category/Attribute/AttributeValue tables described in the
-written answers (Q5), not hardcoded like this.
-
-Each category carries:
-  - path: the full Shopify taxonomy path (for display / GID lookup)
-  - keywords: signal words used by the rule-based matcher (Layer 1 / Layer 2
-    from written answer Q1) to score a product against this category
-  - attributes: which attribute keys are relevant for this category, each with
-    a small controlled vocabulary of expected values used for attribute
-    extraction from free text
-"""
-
 TAXONOMY = {
     "sofas": {
         "path": "Home & Garden > Furniture > Sofas",
